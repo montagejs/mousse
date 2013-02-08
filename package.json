@@ -1,0 +1,37 @@
+{
+    "name": "mousse",
+    "version": "0.1.0",
+    "description": "Deserialization of JavaScript objects",
+    "keywords": [
+        "deserialization",
+        "serialization"
+    ],
+    "author": "António Afonso <antonio.afonso@gmail.com> (http://github.com/aadsm/)",
+    "contributors": [
+        "António Afonso <antonio.afonso@gmail.com> (http://github.com/aadsm/)"
+    ],
+    "bugs": {
+        "url": "http://github.com/montagejs/mousse/issues"
+    },
+    "licenses": [
+        {
+            "type": "BSD",
+            "url": "http://github.com/montagejs/mousse/raw/master/LICENSE.md"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/montagejs/mousse.git"
+    },
+    "main": "mousse",
+    "dependencies": {
+        "q": "0.8 - 0.9",
+        "collections": "*"
+    },
+    "devDependencies": {
+        "jasmine-node": "1.x.x"
+    },
+    "scripts": {
+        "test": "./node_modules/.bin/jasmine-node spec"
+    }
+}
