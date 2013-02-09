@@ -6,6 +6,14 @@ Its main purpose is to provide the features that are missing in JSON and a mecha
 
 This is the library used by the Montage framework to manage the serialization of objects in its templates.
 
+## What it does that JSON doesn't
+
+ * Named objects
+ * References and circular references (no more `TypeError: Converting circular structure to JSON`)
+ * Regular Expressions
+ * Custom Types
+ * Asynchronous revivers
+
 ## API Reference
 
 **`Serializer()`**
@@ -37,15 +45,6 @@ This is the library used by the Montage framework to manage the serialization of
     Returns a promise for the objects that were serialized with `serialize`. This result is an object literal with the deserialized objects and their respective labels: `{label1: object1, label2: object2, ..., labelN: objectN}`.
 
     The `instances` parameter allows to override the deserialization of specific objects by using the instance passed instead, they are passed in an object literal: `{label1: object1, label2: object2, ..., labelN: objectN}`.
-
-
-## What it does that JSON doesn't
-
- * Named objects
- * References
- * Regular Expressions
- * Custom Types
- * Asynchronous revivers
 
 ## Serialization of JavaScript objects
 ### Multiple Objects
@@ -351,7 +350,7 @@ The logic to deserialize a custom object is handled by the `Reviver` object. Thi
 Example to deserialize:
 ```javascript
 {
-    "root": {.
+    "root": {
         "type": "map",
         "object": {/* map data */}
     }
@@ -513,5 +512,5 @@ ExtendedReviver.prototype = Object.create(Reviver.prototype, {
 
 ## Known Issues
 
-Not possible to serialize literal objects that can be mistaken with a reference or a regexp - `{"@": "label"}` and `{"/": {"source": "regexp"}}`).
+Not possible to serialize literal objects that can be mistaken as a reference or a regexp - `{"@": "label"}` and `{"/": {"source": "regexp"}}`).
 
