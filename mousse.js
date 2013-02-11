@@ -1,10 +1,8 @@
-var Serializer = require("./serialization/serializer").Serializer,
-    serialize = require("./serialization/serializer").serialize,
-    Deserializer = require("./deserialization/deserializer").Deserializer,
-    deserialize = require("./deserialization/deserializer").deserialize;
+var serializer = require("./serialization/serializer"),
+    deserializer = require("./deserialization/deserializer");
 
-exports.Serializer = Serializer;
-exports.serialize = serialize;
+exports.Serializer = serializer.Serializer;
+exports.serialize = serializer.serialize;
 
-exports.Deserializer = Deserializer;
-exports.deserialize = deserialize;
+exports.Deserializer = deserializer.Deserializer;
+exports.deserialize = deserializer.deserialize;
