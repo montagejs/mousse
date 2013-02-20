@@ -31,7 +31,8 @@ var Promise = require("q");
             value: function(label) {
                 var serialization = this._serialization,
                     reviver = this._reviver,
-                    objects = this._objects;
+                    objects = this._objects,
+                    object;
 
                 if (label in objects) {
                     return objects[label];
