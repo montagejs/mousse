@@ -15,6 +15,41 @@ describe("reviver", function() {
             expect(type).toBe("string");
         });
 
+        describe("external objects", function() {
+            it("should revive an external object", function() {
+                var externalObject = {},
+                    context = {
+                        hasUserObject: function() {
+                            return true;
+                        },
+                        getUserObject: function() {
+                            return externalObject;
+                        },
+                        setObjectLabel: function() {}
+                    },
+                    object = reviver.reviveRootObject({}, context, "external");
+
+                expect(object).toBe(externalObject);
+            });
+
+            it("should fail when external object is missing", function() {
+                var externalObject = {},
+                    context = {
+                        hasUserObject: function() {
+                            return false;
+                        },
+                        getUserObject: function() {
+                            return;
+                        },
+                        setObjectLabel: function() {}
+                    },
+                    object = reviver.reviveRootObject({}, context, "external");
+
+                expect(Promise.isPromise(object)).toBe(true);
+                expect(object.isRejected()).toBeTruthy();
+            });
+        });
+
         describe("number", function() {
             it("should detect a positive number", function() {
                 var type = reviver.getTypeOf(42);

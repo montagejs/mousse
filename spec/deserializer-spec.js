@@ -51,6 +51,35 @@ describe("deserialization", function() {
         });
     });
 
+    it("should deserialize an external object from a serialization string", function() {
+        var serialization = {
+                "external": {}
+            },
+            userObjects = {
+                "external": {}
+            },
+            serializationString = JSON.stringify(serialization),
+            deserializer = new Deserializer(serializationString);
+
+        return deserializer.deserialize(userObjects).then(function(objects) {
+            expect(userObjects.external).toBe(objects.external);
+        });
+    });
+
+    it("should fail deserializing a missing external object from a serialization string", function() {
+        var serialization = {
+                "external": {}
+            },
+            serializationString = JSON.stringify(serialization),
+            deserializer = new Deserializer(serializationString);
+
+        return deserializer.deserialize().then(function(objects) {
+            expect("test").toBe("fail");
+        }, function() {
+            expect(true).toBe(true);
+        });
+    });
+
     it("should be oblivious to Object.prototype aditions", function() {
         Object.defineProperty(Object.prototype, "clear", {
             value: function() {},

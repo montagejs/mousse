@@ -72,9 +72,7 @@
                         context.setObjectLabel(object, label);
                         return object;
                     } else {
-                        return Promise.reject(
-                            new Error("External object '" + label + "' not found in user objects.")
-                        );
+                        return this.reviveExternalObject(value, context, label);
                     }
 
                 } else {
@@ -213,6 +211,14 @@
                         new Error("Object's type is unknown: " + JSON.stringify(value))
                     );
                 }
+            }
+        },
+
+        reviveExternalObject: {
+            value: function(value, context, label) {
+                return Promise.reject(
+                    new Error("External object '" + label + "' not found in user objects.")
+                );
             }
         },
 
