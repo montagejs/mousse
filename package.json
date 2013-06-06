@@ -1,6 +1,6 @@
 {
     "name": "mousse",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "Deserialization of JavaScript objects",
     "keywords": [
         "deserialization",

@@ -35,7 +35,7 @@
                     return "regexp";
                 } else if (value === null) {
                     return "null";
-                } else if (typeof value === "object") {
+                } else if (typeof value === "object" || typeof value === "function") {
                     return this._getObjectType(value);
                 } else {
                     return typeof value;
