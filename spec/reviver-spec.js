@@ -277,6 +277,7 @@ describe("reviver", function() {
             },
 
             reviveBlob: {
+                writable: true, // so we can spy on it
                 value: function(value, context, label) {
                     // revive the blob
                 }
