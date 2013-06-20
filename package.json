@@ -25,11 +25,11 @@
     },
     "main": "mousse",
     "dependencies": {
-        "q": "~0.8.0",
-        "collections": "~0.1.14"
+        "q": "~0.9.6",
+        "collections": "~0.1.21"
     },
     "devDependencies": {
-        "jasmine-node": "~1.1.0"
+        "jasmine-node": "~1.9.1"
     },
     "scripts": {
         "test": "./node_modules/.bin/jasmine-node spec"
