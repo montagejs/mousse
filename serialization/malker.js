@@ -1,11 +1,21 @@
 (function(ns) {
-    function Malker(handlers) {
-        this._handlers = handlers;
+    
+    /**
+     * A Tree/Graph Walker which visits nodes  
+     * 
+     * @param {Object} visitHandler An object which optionally provides 
+     * specialized function(s) which can be run on nodes which the malker visits. 
+     * 
+     * See also visitor.js for function examples
+     * 
+     */
+    function Malker(visitHandler) {
+        this._visitHandler = visitHandler;
         this._enteredObjects = {};
     }
 
     Object.defineProperties(Malker.prototype, {
-        _handlers: {value: null, writable: true},
+        _visitHandler: {value: null, writable: true},
         _enteredObjects: {value: null, writable: true},
 
         _isObjectEntered: {
@@ -45,7 +55,7 @@
 
         _getObjectType: {
             value: function(object) {
-                var visitor = this._handlers,
+                var visitor = this._visitHandler,
                     type;
 
                 if (typeof visitor.getTypeOf === "function") {
@@ -197,7 +207,7 @@
 
         _callVisitorMethod: {
             value: function(methodName /*, args... */) {
-                var visitor = this._handlers,
+                var visitor = this._visitHandler,
                     args;
 
                 if (typeof visitor[methodName] === "function") {
@@ -226,8 +236,8 @@
     }
 
     ns.Malker = Malker;
-    ns.visit = function(object, handlers) {
-        var malker = new Malker(handlers);
+    ns.visit = function(object, visitHandler) {
+        var malker = new Malker(visitHandler);
         malker.visit(object);
     };
 })(exports);
