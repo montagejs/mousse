@@ -62,7 +62,7 @@
                     object = this.object[label];
 
                     if (object.toJSON) {
-                        result[label] = object.toJSON(1);
+                        result[label] = object.toJSON(label, 1);
                     } else {
                         result[label] = object;
                     }
@@ -117,7 +117,7 @@
         },
 
         toJSON: {
-            value: function(level) {
+            value: function(index, level) {
                 var value = this._getSerializationValue();
 
                 if (level === 1) {
@@ -142,7 +142,7 @@
         constructor: {value: ReferenceableValue},
 
         toJSON: {
-            value: function(level) {
+            value: function(index, level) {
                 var reference,
                     value = this._getSerializationValue();
 
@@ -253,7 +253,7 @@
         },
 
         toJSON: {
-            value: function(level) {
+            value: function(index, level) {
                 var reference,
                     value = this._getSerializationValue();
 
