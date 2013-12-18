@@ -41,7 +41,7 @@
                 } else if (RegExp.isRegExp(object)) {
                     return "regexp";
                 } else {
-                    return "object";
+                    return typeof object;
                 }
             }
         },
