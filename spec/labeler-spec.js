@@ -29,7 +29,6 @@ describe("labeler", function() {
         });
 
         it("should not recognize new labels as user defined", function() {
-            labeler.initWithObjects();
             labeler.setObjectLabel(object, "object");
 
             expect(labeler.isUserDefinedLabel("object")).toBe(false);
@@ -37,10 +36,17 @@ describe("labeler", function() {
     });
 
     describe("labels", function() {
-        it("should know when a label is defined", function() {
+        it("should add a label", function() {
+            labeler.addLabel("baseName");
+
+            expect(labeler.isLabelDefined("baseName")).toBe(true);
+        });
+    });
+
+    describe("object labels", function() {
+        it("should know when an object label is defined", function() {
             var label;
 
-            labeler.initWithObjects();
             label = labeler.getObjectLabel(object);
 
             expect(labeler.isLabelDefined(label)).toBe(true);
@@ -49,7 +55,6 @@ describe("labeler", function() {
         it("should return the same label for the same object", function() {
             var label;
 
-            labeler.initWithObjects();
             label = labeler.getObjectLabel(object);
 
             expect(labeler.getObjectLabel(object)).toBe(label);
@@ -58,32 +63,66 @@ describe("labeler", function() {
         it("should find a label by object", function() {
             var label;
 
-            labeler.initWithObjects();
             label = labeler.getObjectLabel(object);
 
             expect(labeler.getObjectByLabel(label)).toBe(object);
         });
+
+        it("should generate a label for an object", function() {
+            var label;
+
+            label = labeler.generateObjectLabel(object);
+
+            expect(label).toBe("object");
+        });
     });
 
     describe("label generation", function() {
-        describe("object names", function() {
-            it("should find the appropriate object name for an object", function() {
-                var name = labeler.getObjectName({});
+        it("should generate a label", function() {
+            var label;
 
-                expect(name).toBe("object");
-            });
+            label = labeler.generateLabel("baseName");
 
-            it("should find the appropriate object name for a number", function() {
-                var name = labeler.getObjectName(42);
+            expect(label).toBe("baseName");
+        });
 
-                expect(name).toBe("number");
-            });
+        it("should generate different labels for the same base name", function() {
+            var label1,
+                label2;
 
-            it("should find the appropriate object name for a string", function() {
-                var name = labeler.getObjectName("a string");
+            label1 = labeler.generateLabel("baseName");
+            label2 = labeler.generateLabel("baseName");
 
-                expect(name).toBe("string");
-            });
-        })
+            expect(label1).not.toBe(label2);
+        });
+
+        it("should avoid existing labels when generating a new label", function() {
+            var label;
+
+            labeler.addLabel("baseName");
+            label = labeler.generateLabel("baseName");
+
+            expect(label).not.toBe("baseName");
+        });
+    });
+
+    describe("object names", function() {
+        it("should find the appropriate object name for an object", function() {
+            var name = labeler.getObjectName({});
+
+            expect(name).toBe("object");
+        });
+
+        it("should find the appropriate object name for a number", function() {
+            var name = labeler.getObjectName(42);
+
+            expect(name).toBe("number");
+        });
+
+        it("should find the appropriate object name for a string", function() {
+            var name = labeler.getObjectName("a string");
+
+            expect(name).toBe("string");
+        });
     });
 });
