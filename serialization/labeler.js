@@ -101,6 +101,12 @@
             }
         },
 
+        isLabelDefined: {
+            value: function(label) {
+                return label in this._objects;
+            }
+        },
+
         isUserDefinedLabel: {
             value: function(label) {
                 return label in this._userDefinedLabels;

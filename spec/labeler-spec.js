@@ -37,6 +37,15 @@ describe("labeler", function() {
     });
 
     describe("labels", function() {
+        it("should know when a label is defined", function() {
+            var label;
+
+            labeler.initWithObjects();
+            label = labeler.getObjectLabel(object);
+
+            expect(labeler.isLabelDefined(label)).toBe(true);
+        });
+
         it("should return the same label for the same object", function() {
             var label;
 
