@@ -104,6 +104,18 @@ describe("labeler", function() {
 
             expect(label).not.toBe("baseName");
         });
+
+        it("should find the label base name", function() {
+            var baseName = labeler.getLabelBaseName("baseName");
+
+            expect(baseName).toBe("baseName");
+        });
+
+        it("should find the label base name when it has a number", function() {
+            var baseName = labeler.getLabelBaseName("baseName3");
+
+            expect(baseName).toBe("baseName");
+        });
     });
 
     describe("object names", function() {

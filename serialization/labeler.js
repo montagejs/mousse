@@ -60,6 +60,12 @@
             }
         },
 
+        getLabelBaseName: {
+            value: function(label) {
+                return label.replace(/\d*$/, "");
+            }
+        },
+
         addLabel: {
             value: function(label) {
                 this._labels[label] = true;
