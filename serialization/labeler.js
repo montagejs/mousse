@@ -1,21 +1,27 @@
 (function(ns) {
     function Labeler() {
+        this._labels = Object.create(null);
         this._objectsLabels = Object.create(null);
         this._objects = Object.create(null);
-        this._objectNamesIndex = Object.create(null);
+        this._baseNamesIndex = Object.create(null);
         this._userDefinedLabels = Object.create(null);
     }
 
     Object.defineProperties(Labeler.prototype, {
+        _labels: {value: null, writable: true},
         // hash(object) -> label
         _objectsLabels: {value: null, writable: true},
         _objects: {value: null, writable: true},
         // Labels generation sequence is "label", "label2", "label3", ..., hence
         // starting at 2.
         _INITIAL_LABEL_NUMBER: {value: 2},
-        _objectNamesIndex: {value: null, writable: true},
+        _baseNamesIndex: {value: null, writable: true},
         _userDefinedLabels: {value: null, writable: true},
 
+        /**
+         * When the labeler is initialized with objects these objects are
+         * considered user defined objects.
+         */
         initWithObjects: {
             value: function(labels) {
                 for (var label in labels) {
@@ -27,12 +33,58 @@
 
         cleanup: {
             value: function() {
+                this._labels = null;
                 this._objectsLabels = null;
                 this._objects = null;
-                this._objectNamesIndex = null;
+                this._baseNamesIndex = null;
                 this._userDefinedLabels = null;
             }
         },
+
+        generateLabel: {
+            value: function(baseName) {
+                var index = this._baseNamesIndex[baseName],
+                    label;
+
+                do {
+                    if (index) {
+                        label = baseName + index;
+                        this._baseNamesIndex[baseName] = index = index + 1;
+                    } else {
+                        label = baseName;
+                        this._baseNamesIndex[baseName] = index = this._INITIAL_LABEL_NUMBER;
+                    }
+                } while (label in this._labels);
+
+                return label;
+            }
+        },
+
+        getLabelBaseName: {
+            value: function(label) {
+                return label.replace(/\d*$/, "");
+            }
+        },
+
+        addLabel: {
+            value: function(label) {
+                this._labels[label] = true;
+            }
+        },
+
+        isLabelDefined: {
+            value: function(label) {
+                return label in this._labels;
+            }
+        },
+
+        isUserDefinedLabel: {
+            value: function(label) {
+                return label in this._userDefinedLabels;
+            }
+        },
+
+        /// OBJECTS LABEL MANAGEMENT
 
         getObjectName: {
             value: function(object) {
@@ -41,28 +93,16 @@
                 } else if (RegExp.isRegExp(object)) {
                     return "regexp";
                 } else {
-                    return "object";
+                    return typeof object;
                 }
             }
         },
 
         generateObjectLabel: {
             value: function(object) {
-                var objectName = this.getObjectName(object),
-                    index = this._objectNamesIndex[objectName],
-                    objectLabel;
+                var objectName = this.getObjectName(object);
 
-                do {
-                    if (index) {
-                        objectLabel = objectName + index;
-                        this._objectNamesIndex[objectName] = index = index + 1;
-                    } else {
-                        objectLabel = objectName;
-                        this._objectNamesIndex[objectName] = index = this._INITIAL_LABEL_NUMBER;
-                    }
-                } while (objectLabel in this._objects);
-
-                return objectLabel;
+                return this.generateLabel(objectName);
             }
         },
 
@@ -75,9 +115,7 @@
                     label = this._objectsLabels[hash];
                 } else {
                     label = this.generateObjectLabel(object);
-
-                    this._objectsLabels[hash] = label;
-                    this._objects[label] = object;
+                    this.setObjectLabel(object, label);
                 }
 
                 return label;
@@ -89,6 +127,7 @@
                 if (typeof object !== "undefined") {
                     var hash = Object.hash(object);
 
+                    this.addLabel(label);
                     this._objectsLabels[hash] = label;
                     this._objects[label] = object;
                 }
@@ -98,12 +137,6 @@
         getObjectByLabel: {
             value: function(label) {
                 return this._objects[label];
-            }
-        },
-
-        isUserDefinedLabel: {
-            value: function(label) {
-                return label in this._userDefinedLabels;
             }
         }
     });
