@@ -72,6 +72,14 @@
             }
         },
 
+        addLabels: {
+            value: function(labels) {
+                for (var i = 0, ii = labels.length; i < ii; i++) {
+                    this.addLabel(labels[i]);
+                }
+            }
+        },
+
         isLabelDefined: {
             value: function(label) {
                 return label in this._labels;

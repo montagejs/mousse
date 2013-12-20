@@ -41,6 +41,13 @@ describe("labeler", function() {
 
             expect(labeler.isLabelDefined("baseName")).toBe(true);
         });
+
+        it("should add several labels", function() {
+            labeler.addLabels(["label1", "label2"]);
+
+            expect(labeler.isLabelDefined("label1")).toBe(true);
+            expect(labeler.isLabelDefined("label2")).toBe(true);
+        });
     });
 
     describe("object labels", function() {
