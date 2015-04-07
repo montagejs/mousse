@@ -25,8 +25,8 @@
     },
     "main": "mousse",
     "dependencies": {
-        "q": "1.0.0",
-        "collections": "~1.2.1"
+        "bluebird":"2.9.10",
+        "collections": "~1.2.2"
     },
     "devDependencies": {
         "jasmine-node": "~1.9.1"

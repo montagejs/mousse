@@ -1,4 +1,4 @@
-var Promise = require("q");
+var Promise = require("bluebird");
 
 (function(ns) {
     function Context(serialization, reviver, objects) {
@@ -65,7 +65,7 @@ var Promise = require("q");
                 for (var label in serialization) {
                     result = this.getObject(label);
 
-                    if (Promise.isPromise(result)) {
+                    if (Promise.is(result)) {
                         promises.push(result);
                     }
                 }
@@ -110,7 +110,7 @@ var Promise = require("q");
 
                 if (typeof reviver.didReviveObjects === "function") {
                     result = reviver.didReviveObjects(this._objects, this);
-                    if (Promise.isPromise(result)) {
+                    if (Promise.is(result)) {
                         return result.then(function() {
                             return self._objects;
                         });

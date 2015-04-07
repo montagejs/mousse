@@ -1,5 +1,5 @@
 (function(ns) {
-    var Promise = require("q"),
+    var Promise = require("bluebird"),
         Interpreter = require("./interpreter").Interpreter;
 
     function Deserializer(serializationString) {

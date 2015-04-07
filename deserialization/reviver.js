@@ -1,6 +1,6 @@
 (function(ns) {
     var global = (function() { return this; })(),
-        Promise = require("q");
+        Promise = require("bluebird");
 
     function Reviver() {
 
@@ -125,7 +125,7 @@
                 for (var propertyName in value) {
                     item = this.reviveValue(value[propertyName], context);
 
-                    if (Promise.isPromise(item)) {
+                    if (Promise.is(item)) {
                         promises.push(
                             item.then(this._createAssignValueFunction(
                                 value, propertyName)
@@ -180,7 +180,7 @@
                 for (var i = 0, ii = value.length; i < ii; i++) {
                     item = this.reviveValue(value[i], context);
 
-                    if (Promise.isPromise(item)) {
+                    if (Promise.is(item)) {
                         promises.push(
                             item.then(this._createAssignValueFunction(value, i))
                         );
