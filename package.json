@@ -25,7 +25,7 @@
     },
     "main": "mousse",
     "dependencies": {
-        "bluebird":"2.9.10",
+        "bluebird":"2.9.26",
         "collections": "~1.2.2"
     },
     "devDependencies": {
