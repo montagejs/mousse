@@ -1,6 +1,6 @@
 var Reviver = require("../deserialization/reviver").Reviver,
     Interpreter = require("../deserialization/interpreter").Interpreter,
-    Promise = require("q");
+    Promise = require("bluebird");
 
 require("./lib/jasmine-promise");
 
@@ -45,7 +45,7 @@ describe("reviver", function() {
                     },
                     object = reviver.reviveRootObject({}, context, "external");
 
-                expect(Promise.isPromise(object)).toBe(true);
+                expect(Promise.is(object)).toBe(true);
                 expect(object.isRejected()).toBeTruthy();
             });
         });
@@ -220,19 +220,18 @@ describe("reviver", function() {
                 revivals: 0,
 
                 reviveCustom1: function(value, context, label) {
-                    var deferred = Promise.defer();
+                    var deferred = new Promise(function(resolve, reject) {
+                        setTimeout(function() {
+                            context.setObjectLabel(value.custom1, label);
+                            resolve(value.custom1);
+                            return value.custom1;
+                        }, 0);
+                    });
 
                     this.revivals++;
                     expect(this.revivals).toBe(1);
 
-                    setTimeout(function() {
-                        context.setObjectLabel(value.custom1, label);
-                        deferred.resolve(value.custom1);
-
-                        return value.custom1;
-                    }, 0);
-
-                    return deferred.promise;
+                    return deferred;
                 }
             });
 
