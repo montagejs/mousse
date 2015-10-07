@@ -7,11 +7,8 @@ var Promise = require("bluebird");
         this._objects = Object.create(null);
 
         if (objects) {
-            this._userObjects = Object.create(null);
-
-            for (var label in objects) {
-                this._userObjects[label] = objects[label];
-            }
+			//Benoit: Why copy over when we can extend and have lookup for free?
+            this._userObjects = Object.create(objects);
         }
     }
 

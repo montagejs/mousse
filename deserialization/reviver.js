@@ -50,7 +50,7 @@
                 // and stop the execution. This is intended to provide a certain
                 // level of debugging in the serialization.
                 if (value.debugger) {
-                    debugger;
+                    console.log("Add Breakpoint here");
                 }
 
                 if ("value" in value) {
@@ -116,10 +116,11 @@
         reviveObjectLiteral: {
             value: function(value, context, label) {
                 var item,
-                    promises = [];
+                    promises = [],
+					newValue = Object.create(value);
 
                 if (label) {
-                    context.setObjectLabel(value, label);
+                    context.setObjectLabel(newValue, label);
                 }
 
                 for (var propertyName in value) {
@@ -127,20 +128,20 @@
 
                     if (Promise.is(item)) {
                         promises.push(
-                            item.then(this._createAssignValueFunction(
-                                value, propertyName)
+                            item.then(this._createAssignValueFunction(newValue, propertyName)
                             )
                         );
                     } else {
-                        value[propertyName] = item;
+                        newValue[propertyName] = item;
                     }
                 }
 
                 if (promises.length === 0) {
-                    return value;
+                    return newValue;
                 } else {
                     return Promise.all(promises).then(function() {
-                        return value;
+						promises = null;
+                        return newValue;
                     });
                 }
             }
@@ -171,10 +172,11 @@
         reviveArray: {
             value: function(value, context, label) {
                 var item,
-                    promises = [];
+                    promises = [],
+					newValue = value.slice();
 
                 if (label) {
-                    context.setObjectLabel(value, label);
+                    context.setObjectLabel(newValue, label);
                 }
 
                 for (var i = 0, ii = value.length; i < ii; i++) {
@@ -182,18 +184,19 @@
 
                     if (Promise.is(item)) {
                         promises.push(
-                            item.then(this._createAssignValueFunction(value, i))
+                            item.then(this._createAssignValueFunction(newValue, i))
                         );
                     } else {
-                        value[i] = item;
+                        newValue[i] = item;
                     }
                 }
 
                 if (promises.length === 0) {
-                    return value;
+                    return newValue;
                 } else {
                     return Promise.all(promises).then(function() {
-                        return value;
+						promises = null;
+                        return newValue;
                     });
                 }
             }

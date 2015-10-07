@@ -211,30 +211,28 @@ describe("interpreter", function() {
 
     describe("object references", function() {
         it("should deserialize an object reference in a property", function() {
-            var instantiation,
-                serialization = {
+            var serialization = {
                     "main": {
                         "value": {
-                            "object": {"@": "object"}
+                            "object": {"@": "foo"}
                         }
                     },
 
-                    "object": {
+                    "foo": {
                         "value": {
-                            "name": "object"
+                            "name": "bar"
                         }
                     }
                 };
 
             return interpreter.instantiate(serialization)
             .then(function(objects) {
-                expect(objects.main.object).toBe(objects.object);
+                expect(objects.main.object).toBe(objects.foo);
             });
         });
 
         it("should deserialize an object reference in an array", function() {
-            var instantiation,
-                serialization = {
+            var serialization = {
                     "main": {
                         "value": [
                             {"@": "object"}
